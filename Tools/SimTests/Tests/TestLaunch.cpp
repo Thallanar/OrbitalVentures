@@ -107,6 +107,23 @@ OV_TEST(IssInclinationLaunch)
 	OV_CHECK_NEAR(Orbital::RadToDeg(Sim.GetTelemetry().Inclination), 51.6, 0.05);
 }
 
+OV_TEST(AlcantaraReachesInclinationsTheCapeCannot)
+{
+	FAscentProfile Ascent;
+	Ascent.TargetAltitude = LaunchTestTargetAltitude;
+	Ascent.TargetInclination = Orbital::DegToRad(5.0);
+
+	// 5° está abaixo da latitude do Cabo (28,56°), mas acima da de Alcântara (2,32°).
+	const FLaunchSimulation FromCape(ReferenceVehicles::MakeKestrel9(10000.0), ReferenceVehicles::MakeCapeCanaveral(), Ascent);
+	OV_CHECK(!FromCape.GetLaunchPlane().bInclinationReachable);
+
+	FLaunchSimulation FromAlcantara(ReferenceVehicles::MakeKestrel9(10000.0), ReferenceVehicles::MakeAlcantara(), Ascent);
+	OV_CHECK(FromAlcantara.GetLaunchPlane().bInclinationReachable);
+	FromAlcantara.RunToCompletion();
+	OV_CHECK(FromAlcantara.GetOutcome() == EFlightOutcome::OrbitAchieved);
+	OV_CHECK_NEAR(Orbital::RadToDeg(FromAlcantara.GetTelemetry().Inclination), 5.0, 0.05);
+}
+
 OV_TEST(EngineOutDuringBoostStillReachesOrbit)
 {
 	const FAscentProfile Ascent = MakeProfile(CapeLatitudeDegrees());

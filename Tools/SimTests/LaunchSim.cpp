@@ -63,6 +63,7 @@ namespace
 			"Uso: LaunchSim [opcoes]\n"
 			"  --payload <t>          massa da carga (padrao 10)\n"
 			"  --altitude <km>        orbita circular alvo (padrao 200)\n"
+			"  --site <alcantara|cabo> sitio de lancamento (padrao alcantara)\n"
 			"  --inclination <graus>  inclinacao alvo (padrao: latitude do sitio)\n"
 			"  --pitchover <m>        altitude do inicio do giro (padrao 1000)\n"
 			"  --aggressiveness <0-1> agressividade do giro (padrao 0.5)\n"
@@ -75,9 +76,9 @@ int main(int Argc, char** Argv)
 {
 	double PayloadTonnes = 10.0;
 	double IntervalSeconds = 10.0;
-	const Vehicle::FLaunchSite LaunchSite = ReferenceVehicles::MakeCapeCanaveral();
+	Vehicle::FLaunchSite LaunchSite = ReferenceVehicles::MakeAlcantara();
 	Vehicle::FAscentProfile Ascent;
-	Ascent.TargetInclination = LaunchSite.Latitude;
+	bool bInclinationGiven = false;
 	std::vector<Vehicle::FEngineFailure> Failures;
 
 	for (int Index = 1; Index < Argc; ++Index)
@@ -92,7 +93,17 @@ int main(int Argc, char** Argv)
 		const char* Value = Argv[++Index];
 		if (std::strcmp(Arg, "--payload") == 0) { PayloadTonnes = std::atof(Value); }
 		else if (std::strcmp(Arg, "--altitude") == 0) { Ascent.TargetAltitude = std::atof(Value) * 1000.0; }
-		else if (std::strcmp(Arg, "--inclination") == 0) { Ascent.TargetInclination = Orbital::DegToRad(std::atof(Value)); }
+		else if (std::strcmp(Arg, "--inclination") == 0) { Ascent.TargetInclination = Orbital::DegToRad(std::atof(Value)); bInclinationGiven = true; }
+		else if (std::strcmp(Arg, "--site") == 0)
+		{
+			if (std::strcmp(Value, "alcantara") == 0) { LaunchSite = ReferenceVehicles::MakeAlcantara(); }
+			else if (std::strcmp(Value, "cabo") == 0) { LaunchSite = ReferenceVehicles::MakeCapeCanaveral(); }
+			else
+			{
+				PrintUsage();
+				return 1;
+			}
+		}
 		else if (std::strcmp(Arg, "--pitchover") == 0) { Ascent.PitchoverAltitude = std::atof(Value); }
 		else if (std::strcmp(Arg, "--aggressiveness") == 0) { Ascent.Aggressiveness = std::atof(Value); }
 		else if (std::strcmp(Arg, "--interval") == 0) { IntervalSeconds = std::atof(Value); }
@@ -112,6 +123,12 @@ int main(int Argc, char** Argv)
 			PrintUsage();
 			return 1;
 		}
+	}
+
+	if (!bInclinationGiven)
+	{
+		// Sem inclinação pedida, lança para leste: a menor inclinação que o sítio alcança é a própria latitude.
+		Ascent.TargetInclination = std::abs(LaunchSite.Latitude);
 	}
 
 	Vehicle::FLaunchSimulation Sim(ReferenceVehicles::MakeKestrel9(PayloadTonnes * 1000.0), LaunchSite, Ascent);

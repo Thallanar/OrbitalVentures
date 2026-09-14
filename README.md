@@ -32,7 +32,7 @@ O `OrbitalCore` e o `VehicleSim` são C++ puro e compilam fora do motor.
 cmake -S Tools/SimTests -B Tools/SimTests/build -DCMAKE_BUILD_TYPE=Release
 cmake --build Tools/SimTests/build
 ./Tools/SimTests/build/SimTests      # testes automatizados
-./Tools/SimTests/build/LaunchSim     # assiste a um lançamento do Kestrel 9 pela telemetria
+./Tools/SimTests/build/LaunchSim     # assiste a um lançamento do Kestrel 9 de Alcântara pela telemetria
 ```
 
 Exemplos do `LaunchSim`:
@@ -40,7 +40,8 @@ Exemplos do `LaunchSim`:
 ```bash
 ./Tools/SimTests/build/LaunchSim --inclination 51.6              # órbita da ISS
 ./Tools/SimTests/build/LaunchSim --engine-out 60:1:1             # perde 1 motor do 1º estágio em T+60 s
-./Tools/SimTests/build/LaunchSim --payload 24                    # perto do limite de carga
+./Tools/SimTests/build/LaunchSim --payload 25                    # perto do limite de carga
+./Tools/SimTests/build/LaunchSim --site cabo                      # mesmo voo a partir do Cabo Canaveral
 ./Tools/SimTests/build/LaunchSim --pitchover 300 --aggressiveness 1   # giro cedo e agressivo demais
 ./Tools/SimTests/build/LaunchSim --help
 ```

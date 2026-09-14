@@ -34,6 +34,12 @@ namespace ReferenceVehicles
 		return Vehicle;
 	}
 
+	/** Plataforma do VLS no Centro de Lançamento de Alcântara (2°19′04″S, 44°22′04″W): o sítio inicial do jogo. */
+	inline Vehicle::FLaunchSite MakeAlcantara()
+	{
+		return {.Name = "Alcântara", .Latitude = Orbital::DegToRad(-2.31770), .Longitude = Orbital::DegToRad(-44.36779)};
+	}
+
 	inline Vehicle::FLaunchSite MakeCapeCanaveral()
 	{
 		return {.Name = "Cabo Canaveral", .Latitude = Orbital::DegToRad(28.5623), .Longitude = Orbital::DegToRad(-80.5774)};

@@ -723,12 +723,19 @@
       <h3 class="sub">Um sítio no começo, outros conquistados</h3>
       <p>A partida começa com um único complexo. Abrir um segundo sítio é um investimento grande, e compra duas coisas: <strong>inclinações que o primeiro não alcança</strong> &mdash; a latitude do sítio define a inclinação mínima e o quanto a rotação da Terra ajuda &mdash; e <strong>fôlego na fila de lançamentos</strong>, já que uma plataforma só atende um foguete por vez.</p>
 
+      <h3 class="sub">O primeiro sítio: Alcântara</h3>
+      <p>A partida começa no <strong>Centro de Lançamento de Alcântara</strong>, no Maranhão, com geografia real. A 2,3° do equador, o sítio tem uma vantagem física que vira identidade do jogo:</p>
+      <ul class="plain">
+        <li>lançar para leste aproveita quase toda a rotação da Terra &mdash; cerca de <strong>464 m/s</strong> de graça, contra 408 m/s no Cabo Canaveral;</li>
+        <li>qualquer inclinação a partir de 2,3° é alcançável sem manobra de plano, o que barateia as órbitas equatoriais e a transferência para a geoestacionária;</li>
+        <li>os lançamentos seguem sobre o Atlântico, longe de áreas habitadas.</li>
+      </ul>
+
       <div class="open-block">
         <h3>Em aberto</h3>
         <ul>
           <li class="q"><input type="checkbox" id="q-dano-plataforma"><label for="q-dano-plataforma">A plataforma sofre dano a cada lançamento e precisa de reparo antes do próximo? (acontece de verdade, e cria fila)</label></li>
           <li class="q"><input type="checkbox" id="q-upgrade"><label for="q-upgrade">Construções evoluem por nível, ou o jogador constrói outra maior?</label></li>
-          <li class="q"><input type="checkbox" id="q-terreno"><label for="q-terreno">O terreno do sítio é real (Cabo Canaveral, Alcântara) ou fictício?</label></li>
           <li class="q"><input type="checkbox" id="q-isru"><label for="q-isru">Quais recursos exatamente existem fora da Terra, e o que dá para produzir no local.</label></li>
         </ul>
       </div>
@@ -982,6 +989,7 @@
         </table>
       </div>
       <p>A combinação que importa é a do meio: <strong>dado real de longe, procedural de perto</strong>. É ela que resolve o risco de renderizar um planeta inteiro em escala 1:1.</p>
+      <p>A Terra em si vem do <strong>Cesium for Unreal</strong>, plugin gratuito e de código aberto que entrega o globo em escala 1:1, com terreno e imagens reais carregados sob demanda e georreferenciamento. É ele que faz a transição do solo à órbita, sem precisarmos escrever um sistema de planeta do zero. O plugin suporta a UE 5.8 desde a versão 2.28.0 e roda no editor do Linux.</p>
 
       <h3 class="sub">Áudio: vozes da sala e som real</h3>
       <ul class="plain">
@@ -994,6 +1002,7 @@
       <div class="open-block">
         <h3>Em aberto</h3>
         <ul>
+          <li class="q"><input type="checkbox" id="q-cesium-elipsoide"><label for="q-cesium-elipsoide">O Cesium usa a Terra elipsoidal (WGS84) e o simulador usa uma esfera &mdash; 21 km de diferença entre os raios equatorial e polar. Qual dos dois vira a referência de altitude?</label></li>
           <li class="q"><input type="checkbox" id="q-idioma-vozes"><label for="q-idioma-vozes">Idioma das chamadas da equipe: inglês técnico, como na realidade, ou localizado?</label></li>
           <li class="q"><input type="checkbox" id="q-momentos-cinema"><label for="q-momentos-cinema">Quais momentos exatamente disparam a câmera cinematográfica.</label></li>
         </ul>
@@ -1167,7 +1176,7 @@
           <div class="m-head"><span class="code">M2</span><span class="t">Primeiro satélite em órbita baixa</span><span class="chip next">em andamento</span></div>
           <p><strong>Pronto:</strong> o simulador de voo, testado fora do motor &mdash; empuxo que varia com a pressão, estágios, arrasto, giro gravitacional com o rumo corrigido pela rotação da Terra e um corredor de subida, guiagem em malha fechada, perda de motor, limite estrutural e aceleração de tempo sem alterar o resultado.</p>
           <p><strong>Pronto também:</strong> Unreal Engine 5.8.2 instalada; os dez módulos compilam em pouco mais de um minuto e carregam no editor.</p>
-          <p><strong>Falta:</strong> a parte visual na Unreal &mdash; Terra 1:1, sítio de lançamento, consoles de telemetria e mapa orbital. É aqui que a escala 1:1 é provada na prática.</p>
+          <p><strong>Falta, em cinco passos:</strong> a ponte entre a simulação e a Unreal; os consoles de telemetria; a Terra com Cesium e o sítio de Alcântara; câmeras, pluma e separação de estágios; o mapa orbital e a tela de pré-voo. O voo na Unreal precisa produzir os mesmos eventos, nos mesmos instantes, que o <code>LaunchSim</code> no terminal &mdash; é aqui que a escala 1:1 é provada na prática.</p>
         </div>
         <div class="milestone">
           <div class="m-head"><span class="code">M3</span><span class="t">Editor de foguetes</span></div>
