@@ -989,7 +989,7 @@
         </table>
       </div>
       <p>A combinação que importa é a do meio: <strong>dado real de longe, procedural de perto</strong>. É ela que resolve o risco de renderizar um planeta inteiro em escala 1:1.</p>
-      <p>A Terra em si vem do <strong>Cesium for Unreal</strong>, plugin gratuito e de código aberto que entrega o globo em escala 1:1, com terreno e imagens reais carregados sob demanda e georreferenciamento. É ele que faz a transição do solo à órbita, sem precisarmos escrever um sistema de planeta do zero. O plugin suporta a UE 5.8 desde a versão 2.28.0 e roda no editor do Linux.</p>
+      <p>A Terra em si vem do <strong>Cesium for Unreal</strong>, plugin gratuito e de código aberto que entrega o globo em escala 1:1, com terreno e imagens reais carregados sob demanda e georreferenciamento. É ele que faz a transição do solo à órbita, sem precisarmos escrever um sistema de planeta do zero. O plugin suporta a UE 5.8 desde a versão 2.28.0, roda no editor do Linux e usa o mesmo elipsoide WGS84 que o simulador.</p>
 
       <h3 class="sub">Áudio: vozes da sala e som real</h3>
       <ul class="plain">
@@ -1002,7 +1002,6 @@
       <div class="open-block">
         <h3>Em aberto</h3>
         <ul>
-          <li class="q"><input type="checkbox" id="q-cesium-elipsoide"><label for="q-cesium-elipsoide">O Cesium usa a Terra elipsoidal (WGS84) e o simulador usa uma esfera &mdash; 21 km de diferença entre os raios equatorial e polar. Qual dos dois vira a referência de altitude?</label></li>
           <li class="q"><input type="checkbox" id="q-idioma-vozes"><label for="q-idioma-vozes">Idioma das chamadas da equipe: inglês técnico, como na realidade, ou localizado?</label></li>
           <li class="q"><input type="checkbox" id="q-momentos-cinema"><label for="q-momentos-cinema">Quais momentos exatamente disparam a câmera cinematográfica.</label></li>
         </ul>
@@ -1110,6 +1109,7 @@
         <li><strong>Espaço de simulação próprio</strong>, com o mundo reposicionado em torno da câmera na hora de desenhar &mdash; em escala 1:1 as distâncias interplanetárias passam do que o motor cobre sozinho.</li>
         <li><strong>Propagação híbrida:</strong> trajetória analítica para veículos sem motor ligado, o que permite acelerar o tempo com muitos objetos; integração numérica no voo propulsado e na atmosfera.</li>
         <li><strong>Relógio único</strong> de simulação, desacoplado da taxa de quadros.</li>
+        <li><strong>Terra elipsoidal (WGS84)</strong>, a mesma do GPS e do Cesium. Na fase atmosférica, altitude é a altura acima do elipsoide e a vertical é a normal à superfície; o plano orbital e a guiagem em malha fechada seguem geocêntricos, e apogeu e perigeu são medidos acima do raio equatorial. Numa esfera, o erro de altitude chegaria a 21 km nos polos &mdash; e a 5 km no Cabo Canaveral.</li>
         <li><strong>Estado separado da apresentação</strong> &mdash; facilita salvar, testar e, no futuro, multiplayer.</li>
       </ul>
 

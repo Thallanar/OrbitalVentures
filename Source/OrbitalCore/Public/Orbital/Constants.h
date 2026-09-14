@@ -18,6 +18,9 @@ namespace Orbital::Constants
 	{
 		inline constexpr double Mu = 3.986004418e14;               // m³/s² (WGS84)
 		inline constexpr double EquatorialRadius = 6378137.0;      // m (WGS84)
+		inline constexpr double Flattening = 1.0 / 298.257223563;  // WGS84
+		inline constexpr double PolarRadius = EquatorialRadius * (1.0 - Flattening);
+		inline constexpr double EccentricitySquared = Flattening * (2.0 - Flattening);
 		inline constexpr double J2 = 1.08262668e-3;
 		inline constexpr double SiderealDay = 86164.0905;          // s
 		inline constexpr double RotationRate = 7.292115e-5;        // rad/s

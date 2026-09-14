@@ -18,6 +18,8 @@ namespace Vehicle
 
 	FLaunchPlane ComputeLaunchPlane(const Orbital::FVec3& SitePosition, double TargetInclination)
 	{
+		// O plano orbital passa pelo centro da Terra, então aqui a vertical e a latitude são geocêntricas: a menor
+		// inclinação alcançável é a latitude geocêntrica do sítio, um pouco menor que a geodésica.
 		const Orbital::FVec3 Up = Orbital::Normalized(SitePosition);
 		const Orbital::FVec3 East = Orbital::Normalized(Orbital::FVec3(-Up.Y, Up.X, 0.0));
 		const Orbital::FVec3 North = Orbital::Cross(Up, East);

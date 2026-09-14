@@ -8,12 +8,13 @@
 
 namespace Vehicle
 {
-	/** Latitude e longitude geodésicas simplificadas (Terra esférica), em radianos. */
+	/** Coordenadas geodésicas sobre o elipsoide WGS84: latitude e longitude em radianos, altura em metros. */
 	struct FLaunchSite
 	{
 		std::string Name;
 		double Latitude = 0.0;
 		double Longitude = 0.0;
+		double Height = 0.0;
 	};
 
 	/** Os ajustes que o jogador faz antes do voo. */

@@ -67,18 +67,18 @@ namespace Vehicle
 		EFlightPhase Phase = EFlightPhase::VerticalAscent;
 		int StageIndex = 0;
 		int ActiveEngines = 0;
-		double Altitude = 0.0;           // m
+		double Altitude = 0.0;           // m acima do elipsoide WGS84
 		double InertialSpeed = 0.0;      // m/s
 		double Airspeed = 0.0;           // m/s, relativa à atmosfera que gira com a Terra
 		double Mach = 0.0;
 		double DynamicPressure = 0.0;    // Pa
 		double ThrustAcceleration = 0.0; // m/s²
 		double Throttle = 0.0;           // 0..1
-		double PitchAngle = 0.0;         // rad acima do horizonte local
+		double PitchAngle = 0.0;         // rad acima do horizonte local (plano tangente ao elipsoide)
 		double Mass = 0.0;               // kg
 		double DeltaVRemaining = 0.0;    // m/s, no vácuo
-		double ApoapsisAltitude = 0.0;   // m
-		double PeriapsisAltitude = 0.0;  // m
+		double ApoapsisAltitude = 0.0;   // m acima do raio equatorial, a convenção usual para órbitas
+		double PeriapsisAltitude = 0.0;  // m acima do raio equatorial
 		double Inclination = 0.0;        // rad
 	};
 

@@ -7,6 +7,7 @@
 
 #include "Orbital/Atmosphere.h"
 #include "Orbital/Constants.h"
+#include "Orbital/Geodesy.h"
 #include "Orbital/Gravity.h"
 #include "Orbital/Integrator.h"
 #include "Orbital/OrbitalElements.h"
@@ -55,7 +56,7 @@ namespace Vehicle
 
 		Orbital::FVec3 AerodynamicDrag(const Orbital::FStateVector& S, double Area)
 		{
-			const double Altitude = Orbital::Length(S.Position) - EarthRadius;
+			const double Altitude = Orbital::GeodeticHeight(S.Position);
 			if (Altitude >= LaunchDragCutoffAltitude)
 			{
 				return {};
@@ -77,11 +78,8 @@ namespace Vehicle
 		, Site(std::move(InSite))
 		, Profile(InProfile)
 	{
-		const double CosLat = std::cos(Site.Latitude);
-		State.Position = Orbital::FVec3(
-			EarthRadius * CosLat * std::cos(Site.Longitude),
-			EarthRadius * CosLat * std::sin(Site.Longitude),
-			EarthRadius * std::sin(Site.Latitude));
+		// No instante zero, o referencial inercial coincide com o fixo na Terra.
+		State.Position = Orbital::GeodeticToCartesian({Site.Latitude, Site.Longitude, Site.Height});
 		State.Velocity = Orbital::Cross(EarthAngularVelocity, State.Position);
 
 		Plane = ComputeLaunchPlane(State.Position, Profile.TargetInclination);
@@ -91,10 +89,11 @@ namespace Vehicle
 		// O plano alvo é inercial, mas o foguete sai de uma Terra que gira. O rumo de subida relativo ao solo
 		// desconta a velocidade do sítio para que, em velocidade orbital, a velocidade inercial caia no plano.
 		{
-			const Orbital::FVec3 Up = Orbital::Normalized(State.Position);
+			const Orbital::FVec3 Up = Orbital::GeodeticUp(State.Position);
 			const Orbital::FVec3 East = Orbital::Normalized(Orbital::FVec3(-Up.Y, Up.X, 0.0));
 			const Orbital::FVec3 North = Orbital::Cross(Up, East);
-			const Orbital::FVec3 InertialDirection = Orbital::Normalized(Orbital::Cross(Plane.Normal, Up));
+			// A direção de lançamento pertence ao plano orbital, que passa pelo centro da Terra: usa a radial.
+			const Orbital::FVec3 InertialDirection = Orbital::Normalized(Orbital::Cross(Plane.Normal, Orbital::Normalized(State.Position)));
 			const double OrbitalSpeed = std::sqrt(EarthMu / TargetRadius);
 			const double EastSpeed = OrbitalSpeed * Orbital::Dot(InertialDirection, East) - Orbital::Length(State.Velocity);
 			const double NorthSpeed = OrbitalSpeed * Orbital::Dot(InertialDirection, North);
@@ -107,7 +106,7 @@ namespace Vehicle
 			StageEngines.push_back(Stage.EngineCount);
 		}
 		bFairingAttached = Definition.FairingMass > 0.0;
-		LastDirection = Orbital::Normalized(State.Position);
+		LastDirection = Orbital::GeodeticUp(State.Position);
 	}
 
 	void FLaunchSimulation::ScheduleEngineFailure(const FEngineFailure& Failure)
@@ -147,7 +146,7 @@ namespace Vehicle
 
 		const double Dt = FixedTimeStep;
 		const double StartMass = CurrentMass();
-		const double StartAltitude = Orbital::Length(State.Position) - EarthRadius;
+		const double StartAltitude = Orbital::GeodeticHeight(State.Position);
 		const double AmbientPressure = Orbital::SampleEarthAtmosphere(std::max(0.0, StartAltitude)).Pressure;
 		const bool bBurning = IsPoweredPhase(Phase) && StagePropellant[StageIndex] > 0.0 && StageEngines[StageIndex] > 0;
 
@@ -236,16 +235,16 @@ namespace Vehicle
 		switch (Phase)
 		{
 		case EFlightPhase::VerticalAscent:
-			return Orbital::Normalized(State.Position);
+			return Orbital::GeodeticUp(State.Position);
 		case EFlightPhase::Pitchover:
-			return Orbital::Normalized(State.Position) * std::cos(KickAngle) + LaunchHeadingDirection() * std::sin(KickAngle);
+			return Orbital::GeodeticUp(State.Position) * std::cos(KickAngle) + LaunchHeadingDirection() * std::sin(KickAngle);
 		case EFlightPhase::GravityTurn:
 		{
 			// Giro gravitacional: empuxo alinhado à velocidade relativa ao ar, com ângulo de ataque nulo. O corredor
 			// impede que um veículo com pouco empuxo, como um que perdeu motor na decolagem, deite no ar denso.
-			const Orbital::FVec3 Up = Orbital::Normalized(State.Position);
+			const Orbital::FVec3 Up = Orbital::GeodeticUp(State.Position);
 			const Orbital::FVec3 AirVelocity = AirRelativeVelocity(State);
-			const double MinFlightPath = AscentCorridorMinFlightPath(Orbital::Length(State.Position) - EarthRadius);
+			const double MinFlightPath = AscentCorridorMinFlightPath(Orbital::GeodeticHeight(State.Position));
 			if (AirFlightPathAngle() >= MinFlightPath)
 			{
 				return Orbital::Normalized(AirVelocity);
@@ -280,7 +279,7 @@ namespace Vehicle
 
 	void FLaunchSimulation::UpdateFlightState()
 	{
-		const double Altitude = Orbital::Length(State.Position) - EarthRadius;
+		const double Altitude = Orbital::GeodeticHeight(State.Position);
 		if (Altitude < 0.0)
 		{
 			AddEvent(EFlightEventType::Impact, StageIndex);
@@ -462,12 +461,12 @@ namespace Vehicle
 		{
 			return 0.5 * Orbital::Constants::Pi;
 		}
-		return std::asin(std::clamp(Orbital::Dot(AirVelocity, Orbital::Normalized(State.Position)) / Airspeed, -1.0, 1.0));
+		return std::asin(std::clamp(Orbital::Dot(AirVelocity, Orbital::GeodeticUp(State.Position)) / Airspeed, -1.0, 1.0));
 	}
 
 	Orbital::FVec3 FLaunchSimulation::LaunchHeadingDirection() const
 	{
-		const Orbital::FVec3 Up = Orbital::Normalized(State.Position);
+		const Orbital::FVec3 Up = Orbital::GeodeticUp(State.Position);
 		const Orbital::FVec3 East = Orbital::Normalized(Orbital::FVec3(-Up.Y, Up.X, 0.0));
 		const Orbital::FVec3 North = Orbital::Cross(Up, East);
 		return East * std::sin(LaunchHeading) + North * std::cos(LaunchHeading);
@@ -480,7 +479,7 @@ namespace Vehicle
 		Out.Phase = Phase;
 		Out.StageIndex = StageIndex;
 		Out.ActiveEngines = StageEngines[StageIndex];
-		Out.Altitude = Orbital::Length(State.Position) - EarthRadius;
+		Out.Altitude = Orbital::GeodeticHeight(State.Position);
 		Out.InertialSpeed = Orbital::Length(State.Velocity);
 		Out.Airspeed = Orbital::Length(AirRelativeVelocity(State));
 
@@ -489,7 +488,7 @@ namespace Vehicle
 		Out.DynamicPressure = 0.5 * Air.Density * Out.Airspeed * Out.Airspeed;
 		Out.ThrustAcceleration = LastThrustAcceleration;
 		Out.Throttle = LastThrottle;
-		Out.PitchAngle = std::asin(std::clamp(Orbital::Dot(LastDirection, Orbital::Normalized(State.Position)), -1.0, 1.0));
+		Out.PitchAngle = std::asin(std::clamp(Orbital::Dot(LastDirection, Orbital::GeodeticUp(State.Position)), -1.0, 1.0));
 		Out.Mass = CurrentMass();
 		Out.DeltaVRemaining = DeltaVRemaining();
 
