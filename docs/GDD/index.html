@@ -1,0 +1,1265 @@
+<title>Orbital Ventures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Saira+Condensed:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap">
+
+<style>
+  :root {
+    --ground: #e9edf3;
+    --surface: #ffffff;
+    --surface-2: #f3f6fa;
+    --ink: #161b27;
+    --ink-2: #3a4356;
+    --muted: #6d7688;
+    --line: #ccd4e0;
+    --line-soft: #dfe5ed;
+    --accent: #1f5f8b;
+    --accent-soft: #dce8f2;
+    --go: #2c6e4b;
+    --go-soft: #dcece2;
+    --hold: #8a6413;
+    --hold-soft: #f4ead4;
+    --nogo: #a2332a;
+
+    --step: clamp(0.95rem, 0.92rem + 0.15vw, 1.03rem);
+    --measure: 68ch;
+    --rail: 16.5rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #0c1018;
+      --surface: #141a25;
+      --surface-2: #1a2130;
+      --ink: #e5eaf3;
+      --ink-2: #b6c0d1;
+      --muted: #838da0;
+      --line: #2a3446;
+      --line-soft: #212a39;
+      --accent: #6aa9d8;
+      --accent-soft: #17293a;
+      --go: #6cc295;
+      --go-soft: #162b22;
+      --hold: #dcae5b;
+      --hold-soft: #2c2313;
+      --nogo: #e8897e;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground: #0c1018;
+    --surface: #141a25;
+    --surface-2: #1a2130;
+    --ink: #e5eaf3;
+    --ink-2: #b6c0d1;
+    --muted: #838da0;
+    --line: #2a3446;
+    --line-soft: #212a39;
+    --accent: #6aa9d8;
+    --accent-soft: #17293a;
+    --go: #6cc295;
+    --go-soft: #162b22;
+    --hold: #dcae5b;
+    --hold-soft: #2c2313;
+    --nogo: #e8897e;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: var(--step);
+    line-height: 1.62;
+    margin: 0;
+    padding-block: 0 4rem;
+    padding-inline: 20px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, .display {
+    font-family: "Saira Condensed", "Arial Narrow", system-ui, sans-serif;
+    text-wrap: balance;
+    margin: 0;
+    letter-spacing: 0.005em;
+  }
+
+  .mono, code, .num {
+    font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  code {
+    font-size: 0.85em;
+    background: var(--surface-2);
+    border: 1px solid var(--line-soft);
+    border-radius: 3px;
+    padding: 0.08em 0.34em;
+    word-break: break-word;
+  }
+
+  a { color: var(--accent); }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* ---------- Cabeçalho ---------- */
+
+  .masthead {
+    max-width: 74rem;
+    margin: 0 auto;
+    border-bottom: 2px solid var(--ink);
+    padding-block: 2.6rem 1.2rem;
+  }
+
+  .eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  h1 {
+    font-size: clamp(2.3rem, 1.5rem + 3.4vw, 3.7rem);
+    font-weight: 700;
+    line-height: 0.98;
+    margin-block: 0.45rem 0.6rem;
+  }
+
+  .standfirst {
+    color: var(--ink-2);
+    max-width: var(--measure);
+    font-size: 1.06rem;
+  }
+
+  .status-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.3rem;
+  }
+
+  .chip {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.26rem 0.6rem;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    color: var(--muted);
+    background: var(--surface);
+  }
+
+  .chip.done { color: var(--go); border-color: var(--go); background: var(--go-soft); }
+  .chip.next { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+
+  /* ---------- Estrutura ---------- */
+
+  .shell {
+    max-width: 74rem;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: var(--rail) minmax(0, 1fr);
+    gap: 3rem;
+    align-items: start;
+    padding-top: 2.2rem;
+  }
+
+  .rail {
+    position: sticky;
+    top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+  }
+
+  .rail nav ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    border-left: 2px solid var(--line-soft);
+  }
+
+  .rail nav a {
+    display: flex;
+    gap: 0.6rem;
+    padding: 0.28rem 0 0.28rem 0.85rem;
+    margin-left: -2px;
+    border-left: 2px solid transparent;
+    color: var(--ink-2);
+    text-decoration: none;
+    font-size: 0.92rem;
+    line-height: 1.35;
+  }
+
+  .rail nav a .n {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.76rem;
+    color: var(--muted);
+    padding-top: 0.12em;
+  }
+
+  .rail nav a:hover { color: var(--ink); }
+
+  .rail nav a.current {
+    color: var(--ink);
+    border-left-color: var(--accent);
+    font-weight: 600;
+  }
+
+  .rail nav a.current .n { color: var(--accent); }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 0.95rem 1rem;
+  }
+
+  .panel h3 {
+    font-size: 0.76rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .tally {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+  }
+
+  .tally .big {
+    font-family: "Saira Condensed", sans-serif;
+    font-size: 2.1rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--hold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tally .lbl { font-size: 0.88rem; color: var(--ink-2); }
+
+  .meter {
+    height: 4px;
+    background: var(--line-soft);
+    border-radius: 2px;
+    margin-top: 0.7rem;
+    overflow: hidden;
+  }
+
+  .meter span {
+    display: block;
+    height: 100%;
+    background: var(--go);
+    width: 0;
+    transition: width 0.25s ease;
+  }
+
+  .filter {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.85rem;
+    font-size: 0.9rem;
+    color: var(--ink-2);
+    cursor: pointer;
+  }
+
+  .filter input { accent-color: var(--accent); width: 1rem; height: 1rem; cursor: pointer; }
+
+  /* ---------- Documento ---------- */
+
+  .doc { min-width: 0; display: flex; flex-direction: column; gap: 3.2rem; }
+
+  section { scroll-margin-top: 1.5rem; }
+
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .sec-head .n {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.85rem;
+    color: var(--accent);
+  }
+
+  .sec-head h2 { font-size: 1.72rem; font-weight: 600; }
+
+  .doc p, .doc li { max-width: var(--measure); }
+  .doc p { margin-block: 0 0.9rem; }
+  .doc > section > p:last-of-type { margin-bottom: 0; }
+
+  .lead { font-size: 1.06rem; color: var(--ink-2); }
+
+  h3.sub {
+    font-size: 1.06rem;
+    font-weight: 600;
+    margin-top: 1.6rem;
+    margin-bottom: 0.45rem;
+  }
+
+  ul.plain { margin: 0 0 0.9rem; padding-left: 1.1rem; }
+  ul.plain li { margin-bottom: 0.3rem; }
+
+  blockquote {
+    margin: 1.2rem 0;
+    padding: 0.9rem 1.1rem;
+    border-left: 3px solid var(--accent);
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 1.04rem;
+    max-width: var(--measure);
+  }
+
+  blockquote p { margin: 0; }
+
+  /* Pilares e cartões */
+
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin-bottom: 1.2rem;
+  }
+
+  .pillar { background: var(--surface); padding: 1rem 1.1rem; }
+
+  .pillar .t {
+    font-family: "Saira Condensed", sans-serif;
+    font-size: 1.12rem;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+  }
+
+  .pillar p { font-size: 0.94rem; color: var(--ink-2); margin: 0; }
+
+  /* Quadro de decisões */
+
+  .decisions { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+
+  .decision {
+    display: grid;
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: 0.4rem 1.2rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--line-soft);
+    align-items: baseline;
+  }
+
+  .decision dt {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.74rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .decision dd { margin: 0; max-width: var(--measure); }
+  .decision dd strong { font-weight: 600; }
+  .decision dd .why { display: block; color: var(--ink-2); font-size: 0.93rem; }
+
+  /* Etapas do loop */
+
+  ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: step; }
+
+  ol.steps li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 2.1rem minmax(0, 1fr);
+    gap: 0.9rem;
+    padding-block: 0.55rem;
+    border-bottom: 1px solid var(--line-soft);
+    max-width: var(--measure);
+  }
+
+  ol.steps li::before {
+    content: counter(step, decimal-leading-zero);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.8rem;
+    color: var(--accent);
+    padding-top: 0.2em;
+  }
+
+  ol.steps .t { font-weight: 600; }
+  ol.steps .d { color: var(--ink-2); font-size: 0.95rem; }
+
+  /* Tabelas */
+
+  .table-scroll { overflow-x: auto; margin-bottom: 1rem; }
+
+  table { border-collapse: collapse; width: 100%; font-size: 0.94rem; }
+
+  th, td {
+    text-align: left;
+    padding: 0.5rem 0.8rem 0.5rem 0;
+    border-bottom: 1px solid var(--line-soft);
+    vertical-align: top;
+  }
+
+  thead th {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    border-bottom: 1px solid var(--line);
+  }
+
+  td.mono { white-space: nowrap; }
+
+  /* Escada de severidade */
+
+  .ladder { display: flex; flex-direction: column; gap: 1px; background: var(--line); border: 1px solid var(--line); margin-bottom: 1.1rem; }
+
+  .rung { background: var(--surface); padding: 0.6rem 0.9rem; display: grid; grid-template-columns: 1.4rem minmax(0, 1fr); gap: 0.8rem; align-items: baseline; }
+
+  .rung .lvl { font-family: "JetBrains Mono", monospace; font-size: 0.78rem; color: var(--muted); }
+  .rung .t { font-weight: 600; }
+  .rung .d { color: var(--ink-2); font-size: 0.94rem; }
+  .rung:nth-child(1) .lvl { color: var(--go); }
+  .rung:nth-child(2) .lvl, .rung:nth-child(3) .lvl { color: var(--hold); }
+  .rung:nth-child(4) .lvl, .rung:nth-child(5) .lvl { color: var(--nogo); }
+
+  /* Roadmap */
+
+  .roadmap { display: flex; flex-direction: column; border-left: 2px solid var(--line); }
+
+  .milestone {
+    padding: 0.1rem 0 1.1rem 1.2rem;
+    margin-left: -2px;
+    border-left: 2px solid transparent;
+    position: relative;
+  }
+
+  .milestone.done { border-left-color: var(--go); }
+  .milestone.now { border-left-color: var(--accent); }
+
+  .milestone .m-head { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; }
+
+  .milestone .code {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .milestone.done .code { color: var(--go); }
+  .milestone.now .code { color: var(--accent); }
+  .milestone .t { font-family: "Saira Condensed", sans-serif; font-size: 1.2rem; font-weight: 600; }
+  .milestone p { color: var(--ink-2); font-size: 0.95rem; margin: 0.15rem 0 0; }
+
+  /* Números verificados */
+
+  .figures {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin-bottom: 1.1rem;
+  }
+
+  .figure { background: var(--surface); padding: 0.8rem 0.9rem; }
+
+  .figure .v {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 1.16rem;
+    color: var(--ink);
+    display: block;
+  }
+
+  .figure .k { font-size: 0.86rem; color: var(--ink-2); display: block; margin-top: 0.15rem; }
+
+  /* Perguntas em aberto */
+
+  .open-block {
+    border: 1px solid var(--hold);
+    border-radius: 3px;
+    background: var(--hold-soft);
+    padding: 0.9rem 1.1rem;
+    margin-top: 1.5rem;
+    max-width: var(--measure);
+  }
+
+  .open-block h3 {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--hold);
+    font-weight: 500;
+    margin-bottom: 0.6rem;
+  }
+
+  .open-block ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.45rem; }
+
+  .q { display: grid; grid-template-columns: 1.1rem minmax(0, 1fr); gap: 0.6rem; align-items: start; }
+
+  .q input { margin: 0.32em 0 0; accent-color: var(--go); width: 1rem; height: 1rem; cursor: pointer; }
+  .q label { cursor: pointer; font-size: 0.96rem; }
+  .q.resolved label { color: var(--muted); text-decoration: line-through; }
+
+  /* Modo "só o que está em aberto" */
+
+  body.only-open .doc > section > :not(.sec-head):not(.open-block) { display: none; }
+  body.only-open .doc > section:not(:has(.open-block)) { display: none; }
+
+  footer.end {
+    max-width: 74rem;
+    margin: 3.5rem auto 0;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  }
+
+  @media (max-width: 62rem) {
+    .shell { grid-template-columns: minmax(0, 1fr); gap: 1.8rem; }
+    .rail { position: static; }
+    .rail nav ol { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); border-left: 0; }
+    .rail nav a { border-left: 0; border-bottom: 2px solid transparent; padding-left: 0; margin-left: 0; }
+    .rail nav a.current { border-left: 0; border-bottom-color: var(--accent); }
+    .decision { grid-template-columns: minmax(0, 1fr); gap: 0.15rem; }
+  }
+</style>
+
+<header class="masthead">
+  <div class="eyebrow">Documento de design &middot; rascunho v0.1 &middot; 11 set 2026</div>
+  <h1>Orbital Ventures</h1>
+  <p class="standfirst">Você funda uma empresa espacial nos dias atuais e a transforma em uma potência capaz de levar humanos a outros mundos. Constrói o complexo industrial, projeta foguetes dentro do orçamento e da tecnologia que tem, conquista contratos e acompanha cada lançamento da sala de controle &mdash; sabendo que a física não perdoa.</p>
+  <div class="status-row">
+    <span class="chip done">M0 estrutura &check;</span>
+    <span class="chip done">M1 núcleo orbital &check;</span>
+    <span class="chip next">M2 em andamento &middot; simulador de voo pronto</span>
+    <span class="chip">35 testes</span>
+    <span class="chip">UE 5.8.2 &middot; C++</span>
+    <span class="chip">nome provisório</span>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="rail">
+    <nav aria-label="Seções do documento">
+      <ol>
+        <li><a href="#visao"><span class="n">00</span> <span>Visão</span></a></li>
+        <li><a href="#loop"><span class="n">01</span> <span>Loop principal</span></a></li>
+        <li><a href="#foguetes"><span class="n">02</span> <span>Foguetes e peças</span></a></li>
+        <li><a href="#base"><span class="n">03</span> <span>Base (RTS)</span></a></li>
+        <li><a href="#empresa"><span class="n">04</span> <span>Empresa e economia</span></a></li>
+        <li><a href="#pd"><span class="n">05</span> <span>P&amp;D e tecnologias</span></a></li>
+        <li><a href="#missoes"><span class="n">06</span> <span>Missões e campanha</span></a></li>
+        <li><a href="#ia"><span class="n">07</span> <span>Concorrentes IA</span></a></li>
+        <li><a href="#arte"><span class="n">08</span> <span>Arte e áudio</span></a></li>
+        <li><a href="#lancamento"><span class="n">09</span> <span>Controle de missão</span></a></li>
+        <li><a href="#confiabilidade"><span class="n">10</span> <span>Confiabilidade</span></a></li>
+        <li><a href="#arquitetura"><span class="n">TD</span> <span>Arquitetura</span></a></li>
+        <li><a href="#roadmap"><span class="n">RM</span> <span>Roadmap</span></a></li>
+      </ol>
+    </nav>
+
+    <div class="panel">
+      <h3>Perguntas em aberto</h3>
+      <div class="tally">
+        <span class="big num" id="open-count">0</span>
+        <span class="lbl">ainda sem resposta</span>
+      </div>
+      <div class="meter"><span id="open-meter"></span></div>
+      <label class="filter" for="only-open">
+        <input type="checkbox" id="only-open">
+        <span>Ver só o que está em aberto</span>
+      </label>
+    </div>
+  </aside>
+
+  <main class="doc">
+
+    <section id="visao">
+      <div class="sec-head"><span class="n">00</span><h2>Visão</h2></div>
+      <p class="lead">Um jogo de gestão de empresa espacial com construção de base em estilo RTS, projeto de foguetes peça por peça e mecânica orbital de verdade, no sistema solar real em escala 1:1.</p>
+
+      <h3 class="sub">Pilares</h3>
+      <div class="pillars">
+        <div class="pillar">
+          <div class="t">Física fiel</div>
+          <p>Mecânica orbital real, sistema solar 1:1. Δv, janelas de lançamento e atmosfera importam.</p>
+        </div>
+        <div class="pillar">
+          <div class="t">Engenharia sob restrição</div>
+          <p>Orçamento e tecnologia definem a qualidade de cada modelo: desempenho, custo e confiabilidade.</p>
+        </div>
+        <div class="pillar">
+          <div class="t">Construção e gestão</div>
+          <p>Base em estilo RTS e uma empresa com finanças, P&amp;D, pessoas e reputação.</p>
+        </div>
+        <div class="pillar">
+          <div class="t">Imersão no lançamento</div>
+          <p>O jogador é o controle de missão, não o piloto: contagem, telemetria ao vivo e decisões de go/no-go.</p>
+        </div>
+      </div>
+      <p>A dificuldade vem da interação entre os pilares: um foguete barato e pouco testado pode falhar; um foguete perfeito pode quebrar a empresa.</p>
+
+      <h3 class="sub">Decisões fechadas</h3>
+      <dl class="decisions">
+        <div class="decision">
+          <dt>Cenário</dt>
+          <dd><strong>Dias atuais &rarr; futuro.</strong> <span class="why">Começa como startup por volta de 2026 e avança até estações, bases na Lua e em Marte.</span></dd>
+        </div>
+        <div class="decision">
+          <dt>Escala</dt>
+          <dd><strong>Sistema solar real, 1:1.</strong> <span class="why">Exige coordenadas em dupla precisão e reposicionamento do mundo em torno da câmera.</span></dd>
+        </div>
+        <div class="decision">
+          <dt>Modos</dt>
+          <dd><strong>Carreira, sandbox e concorrentes IA.</strong> <span class="why">Multiplayer é escopo futuro; a arquitetura precisa permitir, mas não é prioridade.</span></dd>
+        </div>
+        <div class="decision">
+          <dt>Visual</dt>
+          <dd><strong>Fotorealista.</strong> <span class="why">Nanite, Lumen e SkyAtmosphere do UE5.</span></dd>
+        </div>
+        <div class="decision">
+          <dt>Motor</dt>
+          <dd><strong>Unreal Engine 5, lógica em C++.</strong> <span class="why">Blueprint só onde o motor praticamente exige, como layout de telas.</span></dd>
+        </div>
+      </dl>
+
+      <p>Referências: Surviving Mars, Kerbal Space Program, Mars Horizon, Juno: New Origins.</p>
+
+      <div class="open-block">
+        <h3>Em aberto</h3>
+        <ul>
+          <li class="q"><input type="checkbox" id="q-nome"><label for="q-nome">Nome definitivo do jogo.</label></li>
+          <li class="q"><input type="checkbox" id="q-plataformas"><label for="q-plataformas">Plataformas-alvo e loja.</label></li>
+          <li class="q"><input type="checkbox" id="q-monetizacao"><label for="q-monetizacao">Modelo de monetização.</label></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="loop">
+      <div class="sec-head"><span class="n">01</span><h2>Loop principal</h2></div>
+      <ol class="steps">
+        <li><div><span class="t">Contrato</span><br><span class="d">Chega um pedido &mdash; satélite de telecom para GEO, cubesat para órbita heliossíncrona, sonda lunar, tripulação &mdash; com prazo, massa de carga, órbita-alvo e pagamento.</span></div></li>
+        <li><div><span class="t">P&amp;D</span><br><span class="d">Desbloqueia tecnologias: motores, materiais, reutilização, propelentes criogênicos, suporte de vida.</span></div></li>
+        <li><div><span class="t">Projeto</span><br><span class="d">O foguete é montado no editor; o jogo calcula massa, Δv, empuxo sobre peso, custo e a faixa de confiabilidade estimada.</span></div></li>
+        <li><div><span class="t">Produção e testes</span><br><span class="d">Fábricas, bancadas de teste estático, logística de propelente. Testar custa tempo e dinheiro, e é o que compra informação.</span></div></li>
+        <li><div><span class="t">Lançamento</span><br><span class="d">Em tempo real: janela, clima, contagem regressiva, telemetria e anomalias.</span></div></li>
+        <li><div><span class="t">Resultado</span><br><span class="d">Pagamento, reputação, seguro e dados de voo &mdash; que voltam para a empresa como capital e como conhecimento.</span></div></li>
+      </ol>
+
+      <div class="open-block">
+        <h3>Em aberto</h3>
+        <ul>
+          <li class="q"><input type="checkbox" id="q-ritmo"><label for="q-ritmo">Ritmo: quanto tempo real dura um ciclo típico no início do jogo?</label></li>
+          <li class="q"><input type="checkbox" id="q-warp-prazos"><label for="q-warp-prazos">Como o time warp interage com prazos de contrato e tempo de construção.</label></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="foguetes">
+      <div class="sec-head"><span class="n">02</span><h2>Foguetes e peças</h2></div>
+      <p><strong>Editor de peças livres, no estilo KSP:</strong> o jogador monta o veículo peça por peça &mdash; motores, tanques, carenagens, acopladores, boosters laterais &mdash; define os estágios e a ordem de separação.</p>
+      <ul class="plain">
+        <li>Atributos derivados do projeto: massa, Δv (Tsiolkovsky), empuxo sobre peso, custo e confiabilidade.</li>
+        <li>Empuxo e impulso específico variam com a pressão atmosférica.</li>
+        <li>Peças data-driven, cada uma com nível de tecnologia exigido, custo e confiabilidade próprios.</li>
+      </ul>
+
+      <h3 class="sub">O preço de escolher peças livres</h3>
+      <ul class="plain">
+        <li>A geometria passa a importar: a montagem gera massa, centro de massa, área frontal e arrasto &mdash; e o veículo pode ficar aerodinamicamente instável.</li>
+        <li>O editor precisa validar o projeto (estrutura, folga de empuxo, estágios vazios) e mostrar os números em tempo real.</li>
+        <li>É a parte mais cara do M3, em interface e em ferramenta de montagem 3D.</li>
+      </ul>
+
+      <div class="open-block">
+        <h3>Em aberto</h3>
+        <ul>
+          <li class="q"><input type="checkbox" id="q-encaixes"><label for="q-encaixes">Restrições de montagem: encaixes livres ou pontos de conexão definidos por peça?</label></li>
+          <li class="q"><input type="checkbox" id="q-reuso"><label for="q-reuso">Reutilização de estágios: quando entra e como funciona.</label></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="base">
+      <div class="sec-head"><span class="n">03</span><h2>Base (RTS)</h2></div>
+      <p class="lead">Duas economias diferentes, separadas por um detalhe: na Terra existe fornecedor, fora dela não.</p>
+
+      <h3 class="sub">Na Terra: dinheiro, capacidade e prazo</h3>
+      <p>Você compra o que precisa. O que limita não é matéria-prima, é <strong>capacidade de fabricação</strong> e <strong>tempo de entrega</strong>: quantas baias de integração estão livres, quantos dias até o motor encomendado chegar, se a bancada de teste está ocupada. É aqui que dinheiro vira hardware &mdash; e onde a pressa vira defeito de fabricação, alimentando a camada de risco &ldquo;unidade&rdquo; do sistema de confiabilidade.</p>
+
+      <h3 class="sub">Fora da Terra: cadeia física</h3>
+      <p>Na Lua e em Marte não há quem entregue nada. A base passa a depender de energia, água, oxigênio e propelente produzido no local &mdash; e cada tonelada que você não conseguir produzir precisa ser lançada da Terra, ao custo de uma missão inteira. É a mesma pressão real que define arquitetura de missão de verdade.</p>
+
+      <h3 class="sub">Posicionamento livre, com regras que vêm da engenharia</h3>
+      <p>O jogador constrói onde quiser no terreno, mas o espaço tem consequências:</p>
+      <ul class="plain">
+        <li><strong>raio de segurança</strong> da plataforma &mdash; um foguete que explode no lançamento leva junto o que estiver perto;</li>
+        <li><strong>distância do depósito de propelente</strong> &mdash; perto é eficiente, perto é perigoso;</li>
+        <li><strong>o caminho até a plataforma</strong> &mdash; o foguete montado precisa percorrer o trajeto do galpão de integração até a plataforma, e esse trajeto ocupa espaço.</li>
+      </ul>
+      <p>Construções previstas: galpão de integração, plataforma de lançamento, bancada de teste estático, baias de fabricação, depósito de propelente, centro de P&amp;D, controle de missão e administração.</p>
+
+      <h3 class="sub">Um sítio no começo, outros conquistados</h3>
+      <p>A partida começa com um único complexo. Abrir um segundo sítio é um investimento grande, e compra duas coisas: <strong>inclinações que o primeiro não alcança</strong> &mdash; a latitude do sítio define a inclinação mínima e o quanto a rotação da Terra ajuda &mdash; e <strong>fôlego na fila de lançamentos</strong>, já que uma plataforma só atende um foguete por vez.</p>
+
+      <div class="open-block">
+        <h3>Em aberto</h3>
+        <ul>
+          <li class="q"><input type="checkbox" id="q-dano-plataforma"><label for="q-dano-plataforma">A plataforma sofre dano a cada lançamento e precisa de reparo antes do próximo? (acontece de verdade, e cria fila)</label></li>
+          <li class="q"><input type="checkbox" id="q-upgrade"><label for="q-upgrade">Construções evoluem por nível, ou o jogador constrói outra maior?</label></li>
+          <li class="q"><input type="checkbox" id="q-terreno"><label for="q-terreno">O terreno do sítio é real (Cabo Canaveral, Alcântara) ou fictício?</label></li>
+          <li class="q"><input type="checkbox" id="q-isru"><label for="q-isru">Quais recursos exatamente existem fora da Terra, e o que dá para produzir no local.</label></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="empresa">
+      <div class="sec-head"><span class="n">04</span><h2>Empresa e economia</h2></div>
+      <p class="lead">A empresa cresce por fases: sobreviver de contratos avulsos, depois construir receita própria, depois responder a acionistas. Cada fase troca o tipo de pressão, não só o tamanho dos números.</p>
+
+      <h3 class="sub">Pessoas: nome onde há drama, número no resto</h3>
+      <p><strong>Astronautas e especialistas-chave têm nome</strong>, histórico de voos e carreira &mdash; perder uma tripulação precisa doer, e só dói se você souber quem estava a bordo. <strong>Engenheiros, técnicos e chão de fábrica são equipes</strong> com nível, tamanho e carga de trabalho.</p>
+      <p>As equipes não são um número decorativo: elas entram direto nas camadas de risco do sistema de confiabilidade.</p>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Equipe</th><th>Afeta</th><th>Quando sobrecarregada</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Engenharia</strong></td><td>Velocidade da P&amp;D e as margens do projeto.</td><td>Projetos com menos margem, mais risco de integração.</td></tr>
+            <tr><td><strong>Fabricação</strong></td><td>Prazo e qualidade de cada unidade construída.</td><td>Defeitos de fabricação &mdash; a camada &ldquo;unidade&rdquo; do risco.</td></tr>
+            <tr><td><strong>Operações</strong></td><td>Contagem regressiva, leitura da telemetria, tempo de reação.</td><td>Erro de operação e decisões tardias na sala de controle.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub">Receita</h3>
+      <p>Contratos avulsos sustentam o começo. As outras quatro fontes entram conforme a empresa amadurece, e cada uma cobra um preço diferente:</p>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Fonte</th><th>Como funciona</th><th>O que ela cobra de você</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Constelação própria</strong></td><td>Você lança seus próprios satélites e cobra assinatura.</td><td>Capital pesado antes do primeiro centavo, e reposição eterna: satélite tem vida útil e decai.</td></tr>
+            <tr><td><strong>Contratos governamentais longos</strong></td><td>Programas plurianuais e subsídios.</td><td>Dinheiro estável em troca de exigências, fiscalização e prazos que não se negociam.</td></tr>
+            <tr><td><strong>Turismo espacial</strong></td><td>Voos tripulados comerciais, muito bem pagos.</td><td>Qualquer falha vira desastre de reputação &mdash; o risco deixa de ser financeiro.</td></tr>
+            <tr><td><strong>Licenciar tecnologia</strong></td><td>Vender o que você desenvolveu.</td><td>Receita sem lançar nada, mas você arma a concorrência com a sua vantagem.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub">Capital</h3>
+      <ul class="plain">
+        <li><strong>Rodadas de investimento</strong> &mdash; troca participação por capital. Os investidores cobram metas, e entregar mal esgota a paciência deles.</li>
+        <li><strong>Empréstimos</strong> &mdash; dinheiro rápido que vira despesa fixa todo mês, independentemente de você lançar ou não.</li>
+        <li><strong>Abertura de capital</strong> &mdash; etapa tardia. Muito dinheiro, e o valor da ação reage a cada lançamento e a cada falha, ao vivo.</li>
+      </ul>
+      <blockquote><p>Depois do IPO, uma falha custa três vezes: a carga, o contrato e o valor de mercado.</p></blockquote>
+
+      <h3 class="sub">Derrota</h3>
+      <p><strong>Falência encerra a partida</strong>, com aviso antecipado &mdash; o caixa negativo persiste por alguns meses antes do fim, tempo suficiente para tentar salvar a empresa vendendo tecnologia, aceitando um contrato ruim ou buscando capital em condições piores. É essa possibilidade real de acabar que dá peso a cada decisão de cortar um teste para cumprir um prazo.</p>
+
+      <div class="open-block">
+        <h3>Em aberto</h3>
+        <ul>
+          <li class="q"><input type="checkbox" id="q-escala-valores"><label for="q-escala-valores">Escala dos valores: milhões de dólares reais, ou uma moeda própria mais legível?</label></li>
+          <li class="q"><input type="checkbox" id="q-aviso-falencia"><label for="q-aviso-falencia">Quanto tempo de aviso antes da falência, e o que o jogador pode fazer nesse intervalo.</label></li>
+          <li class="q"><input type="checkbox" id="q-valuation"><label for="q-valuation">O valor de mercado vira a pontuação da partida depois do IPO?</label></li>
+          <li class="q"><input type="checkbox" id="q-rotatividade"><label for="q-rotatividade">Salários e rotatividade: as concorrentes roubam suas equipes?</label></li>
+          <li class="q"><input type="checkbox" id="q-astronautas"><label for="q-astronautas">Como astronautas são recrutados e treinados, e o que a experiência deles muda em voo.</label></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="pd">
+      <div class="sec-head"><span class="n">05</span><h2>P&amp;D e tecnologias</h2></div>
+      <p class="lead">Tecnologia e peça são coisas diferentes. Dominar uma tecnologia só dá permissão; o motor que voa é um projeto seu, e herda as escolhas que você fez nele.</p>
+
+      <h3 class="sub">Dois níveis: tecnologia abre, projeto concretiza</h3>
+      <p><strong>Tecnologia</strong> é capacidade: combustão em estágios, tanques de compósito, propelente criogênico, suporte de vida. Pesquisar uma delas libera uma classe de peças, mas não entrega nenhuma.</p>
+      <p><strong>Projeto</strong> é produto: o motor Kestrel-2, desenvolvido dentro dessa tecnologia. É no projeto que o jogador decide o que importa:</p>
+      <ul class="plain">
+        <li><strong>equipe</strong> &mdash; qual equipe de engenharia, e com que nível;</li>
+        <li><strong>orçamento</strong> &mdash; enxuto ou generoso;</li>
+        <li><strong>metas de desempenho</strong> &mdash; impulso específico, empuxo, massa.</li>
+      </ul>
+      <p>Essas três escolhas definem a <strong>confiabilidade real oculta</strong> da peça, que o jogador nunca vê diretamente. Metas agressivas rendem mais desempenho e menos margem: um motor mais eficiente que falha mais.</p>
+
+      <h3 class="sub">Prazo e custo são estimativas</h3>
+      <p>Todo projeto mostra uma faixa &mdash; &ldquo;14 a 22 meses&rdquo; &mdash; e pode estourar. O estouro é mais provável com equipe fraca, orçamento enxuto ou tecnologia recém-dominada. Quando atrasa, o jogador decide: injetar dinheiro, cortar metas e aceitar uma peça pior, ou cancelar e perder o que já gastou.</p>
+      <p>É o mesmo princípio da confiabilidade aplicado ao calendário: <strong>a incerteza é o custo de ir rápido e barato</strong>.</p>
+
+      <h3 class="sub">O que acelera a P&amp;D</h3>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Fonte</th><th>O que dá</th><th>O que custa</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Dados de voo</strong></td><td>A telemetria de cada lançamento &mdash; inclusive das falhas &mdash; acelera a próxima versão da peça.</td><td>Precisa voar. A empresa que não lança não aprende.</td></tr>
+            <tr><td><strong>Estágios recuperados</strong></td><td>Inspecionar hardware que voou revela o que nenhum teste em solo mostra.</td><td>Exige recuperar: massa e Δv gastos em pouso ou resgate no mar.</td></tr>
+            <tr><td><strong>Parcerias e licenças</strong></td><td>Pular etapas comprando tecnologia de terceiros.</td><td>Dinheiro, dependência e cláusulas &mdash; o espelho de licenciar a sua.</td></tr>
+            <tr><td><strong>Fornecedores externos</strong></td><td>Peça pronta com histórico conhecido: a faixa de confiabilidade já chega estreita.</td><td>Custo unitário maior, fila do fornecedor, e nenhum controle sobre a evolução da peça.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>O fornecedor externo resolve o começo do jogo: uma startup sem equipe de propulsão compra motores prontos, voa, fatura &mdash; e decide depois se vale desenvolver os próprios.</p>
+
+      <h3 class="sub">O mundo não espera</h3>
+      <p>A tecnologia avança sozinha. Fornecedores e concorrentes lançam novidades com o passar dos anos, e o que era de ponta vira peça comum e barata. Consequências:</p>
+      <ul class="plain">
+        <li>ficar parado significa ficar para trás, mesmo sem nenhum erro;</li>
+        <li>uma vantagem tecnológica tem prazo de validade &mdash; e licenciá-la vale mais antes de ela virar commodity;</li>
+        <li>o fornecedor externo melhora com o tempo, o que às vezes torna um projeto próprio desnecessário.</li>
+      </ul>
+
+      <div class="open-block">
+        <h3>Em aberto</h3>
+        <ul>
+          <li class="q"><input type="checkbox" id="q-versoes"><label for="q-versoes">Versões incrementais (Kestrel-2 &rarr; Kestrel-2B) herdam o histórico de voos e a faixa de confiabilidade da anterior?</label></li>
+          <li class="q"><input type="checkbox" id="q-metas-ui"><label for="q-metas-ui">Quantas metas de desempenho o jogador ajusta por tipo de peça, sem virar planilha.</label></li>
+          <li class="q"><input type="checkbox" id="q-calendario-tech"><label for="q-calendario-tech">O avanço tecnológico do mundo segue um calendário realista, inspirado em programas reais, ou é gerado a cada partida?</label></li>
+          <li class="q"><input type="checkbox" id="q-fornecedor-quebra"><label for="q-fornecedor-quebra">Fornecedores podem falhar, atrasar ou ser comprados pela concorrência?</label></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="missoes">
+      <div class="sec-head"><span class="n">06</span><h2>Missões e campanha</h2></div>
+      <p class="lead">Não há roteiro. Há uma corrida: marcos que o setor inteiro persegue, e só uma empresa chega primeiro a cada um.</p>
+
+      <h3 class="sub">Marcos abertos, em disputa</h3>
+      <p>A carreira é um quadro de marcos históricos &mdash; primeira órbita comercial, primeiro estágio reutilizado, primeiro voo turístico, estação privada, pouso lunar tripulado &mdash; que o jogador persegue na ordem que quiser. As concorrentes perseguem os mesmos.</p>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Marco</th><th>Situação</th><th>Quem</th></tr></thead>
+          <tbody>
+            <tr><td>Primeira órbita comercial</td><td><span class="chip done">alcançado</span></td><td>Você, 2027</td></tr>
+            <tr><td>Primeiro estágio reutilizado</td><td><span class="chip done">alcançado</span></td><td>Helion Space, 2029</td></tr>
+            <tr><td>Primeiro voo turístico</td><td><span class="chip next">em disputa</span></td><td>Você e Helion Space</td></tr>
+            <tr><td>Estação privada</td><td><span class="chip">aberto</span></td><td>&mdash;</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:0.88rem;color:var(--muted)">Exemplo ilustrativo de uma partida.</p>
+      <p>Chegar primeiro rende reputação e contratos que o segundo não ganha. Mas chegar primeiro também é chegar com menos testes: <strong>a corrida pelos marcos é o motor que empurra o jogador a arriscar</strong> &mdash; e o sistema de confiabilidade é o que cobra por isso.</p>
+
+      <h3 class="sub">Contratos: pequenos chegam, grandes se disputam</h3>
+      <ul class="plain">
+        <li><strong>Contratos pequenos chegam direto</strong> &mdash; cubesats, cargas compartilhadas, voos de rotina. Aceitar ou recusar. Mantêm o caixa girando.</li>
+        <li><strong>Contratos grandes são disputados por proposta</strong> &mdash; o cliente publica o pedido, você e as concorrentes enviam preço e prazo. Vence quem combina preço, reputação e confiabilidade <em>demonstrada</em>.</li>
+      </ul>
+      <blockquote><p>Prometer um prazo curto demais ganha o contrato &mdash; e cria o problema.</p></blockquote>
+      <p>Todo contrato tem objetivos verificáveis pela própria simulação: a órbita entregue precisa ter semieixo maior, excentricidade e inclinação dentro de tolerâncias. Não existe &ldquo;quase lá&rdquo; decidido por script &mdash; a física responde.</p>
+
+      <h3 class="sub">Um fim, e a vida depois dele</h3>
+      <p>A campanha tem um <strong>marco final</strong> que encerra a história com um desfecho. Depois dele, a partida continua: a empresa, a frota e o mercado seguem existindo para quem quiser jogar.</p>
+
+      <h3 class="sub">O que foge do controle</h3>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Evento</th><th>Como aparece</th><th>Por que importa</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Clima e janelas</strong></td><td>Tempo ruim, ventos de altitude, janela de lançamento perdida.</td><td>Transforma prazo de contrato em aposta; é o gatilho natural do hold na contagem.</td></tr>
+            <tr><td><strong>Regulação</strong></td><td>Licenças de lançamento, investigações após falha, aterramento do setor.</td><td>Uma falha grave <em>de uma concorrente</em> pode parar os seus lançamentos também.</td></tr>
+            <tr><td><strong>Economia</strong></td><td>Crises, bolhas de investimento, cortes no orçamento governamental.</td><td>Muda o valor das rodadas de investimento e dos contratos longos no meio da partida.</td></tr>
+            <tr><td><strong>Lixo espacial</strong></td><td>Detritos, alertas de colisão, manobras de desvio.</td><td>Estágios abandonados em órbita são responsabilidade de quem os deixou &mdash; e a órbita congestionada é de todos.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>O lixo espacial é o evento que só este jogo pode ter de verdade: os detritos são objetos na mesma simulação orbital que já propaga satélites, não um sorteio.</p>
+
+      <div class="open-block">
+        <h3>Em aberto</h3>
+        <ul>
+          <li class="q"><input type="checkbox" id="q-marco-final"><label for="q-marco-final">Qual é o marco final: base permanente em Marte, colônia autossuficiente, outro?</label></li>
+          <li class="q"><input type="checkbox" id="q-lista-marcos"><label for="q-lista-marcos">A lista completa de marcos, e quais rendem bônus por ser o primeiro.</label></li>
+          <li class="q"><input type="checkbox" id="q-multas"><label for="q-multas">Multas por atraso e por entregar fora da tolerância: fixas, proporcionais ou negociadas?</label></li>
+          <li class="q"><input type="checkbox" id="q-clima-real"><label for="q-clima-real">O clima é simulado por região ou sorteado por dia de lançamento?</label></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="ia">
+      <div class="sec-head"><span class="n">07</span><h2>Concorrentes IA</h2></div>
+      <p class="lead">As concorrentes não são um cenário que se mexe. São empresas jogando o mesmo jogo, com as mesmas regras &mdash; e cometendo os mesmos erros.</p>
+
+      <h3 class="sub">Mesmas regras, simuladas de verdade</h3>
+      <p>Cada IA tem caixa, equipes, projetos com confiabilidade oculta e foguetes que falham pelo mesmo sistema que o seu. Nada é sorteado por fora:</p>
+      <ul class="plain">
+        <li>quando uma rival explode na plataforma, é porque ela <strong>cortou teste</strong> para ganhar um marco;</li>
+        <li>quando ela vence uma proposta com preço baixo, <strong>o caixa dela sente</strong> &mdash; e talvez ela quebre dois anos depois;</li>
+        <li>os estágios que ela abandona em órbita viram <strong>lixo espacial real</strong>, na mesma simulação.</li>
+      </ul>
+      <p>A dificuldade, portanto, não vem de trapaça. Vem de capital inicial, de competência nas decisões e de quantas empresas disputam o mesmo mercado.</p>
+
+      <h3 class="sub">Geradas a cada partida</h3>
+      <p>Não há elenco fixo. Cada concorrente é montada combinando traços, e o jogador descobre quem ela é pelo comportamento:</p>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Traço</th><th>Varia entre</th><th>Como se revela</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Apetite de risco</strong></td><td>testa exaustivamente &harr; lança com a faixa larga</td><td>Frequência de lançamentos e de falhas.</td></tr>
+            <tr><td><strong>Foco de mercado</strong></td><td>cargas pequenas &harr; governo &harr; tripulados</td><td>Quais propostas ela disputa.</td></tr>
+            <tr><td><strong>Ambição</strong></td><td>lucro estável &harr; Marte a qualquer custo</td><td>Quais marcos ela persegue, e quanto queima de caixa nisso.</td></tr>
+            <tr><td><strong>Estilo técnico</strong></td><td>desenvolve tudo &harr; compra de fornecedores</td><td>Velocidade no começo, independência no fim.</td></tr>
+            <tr><td><strong>Saúde financeira</strong></td><td>bem capitalizada &harr; sempre no limite</td><td>Rodadas de investimento, cortes, preços agressivos.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>O risco dessa escolha é a falta de personalidade; o antídoto é tornar os traços <strong>legíveis pelo que a empresa faz em público</strong>, com nome, identidade visual e manchetes que reforcem o perfil.</p>
+
+      <h3 class="sub">Só o que é público</h3>
+      <p>O jogador vê o que o mundo vê: lançamentos, contratos ganhos, falhas, notícias e rumores. O caixa e a confiabilidade real das rivais ele só deduz &mdash; o mesmo véu da confiabilidade oculta, apontado para fora. Uma rival que não falha há vinte voos provavelmente é boa. Provavelmente.</p>
+
+      <h3 class="sub">Interação direta</h3>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Interação</th><th>Como funciona</th><th>A pegadinha</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Parcerias e caronas</strong></td><td>Levar a carga dela no seu foguete, ou a sua no dela; dividir um programa grande.</td><td>A confiabilidade do foguete dela vira problema seu.</td></tr>
+            <tr><td><strong>Aquisições</strong></td><td>Comprar uma rival em apuros, com equipes, tecnologia e dívidas.</td><td>Vale nos dois sentidos: você também pode ser comprado.</td></tr>
+            <tr><td><strong>Disputa por talentos</strong></td><td>Contratar equipes e astronautas dela.</td><td>E perder os seus &mdash; justamente os mais experientes.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="open-block">
+        <h3>Em aberto</h3>
+        <ul>
+          <li class="q"><input type="checkbox" id="q-ia-quantidade"><label for="q-ia-quantidade">Quantas concorrentes por partida, e se novas empresas surgem ao longo dela.</label></li>
+          <li class="q"><input type="checkbox" id="q-ia-marco-final"><label for="q-ia-marco-final">Se uma rival alcança o marco final antes, você perde a campanha?</label></li>
+          <li class="q"><input type="checkbox" id="q-ia-analistas"><label for="q-ia-analistas">Existe alguma forma legítima de estimar melhor as rivais, como analistas de mercado?</label></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="arte">
+      <div class="sec-head"><span class="n">08</span><h2>Arte e áudio</h2></div>
+      <p class="lead">Fotorealismo não é o objetivo, é o meio: o lançamento precisa parecer algo que aconteceu, não algo que foi animado.</p>
+
+      <h3 class="sub">Câmera: documental no voo, cinematográfica nos marcos</h3>
+      <p>Durante o voo, a linguagem é a de uma <strong>transmissão real</strong>: câmeras de rastreamento com teleobjetiva, câmera a bordo, imagem com ruído e compressão, telemetria sobreposta. É o que o jogador na sala de controle estaria vendo.</p>
+      <p>Nos momentos que merecem &mdash; o primeiro voo que conquista um marco, um pouso de estágio, uma chegada a Marte &mdash; a câmera se solta e vira <strong>cinema</strong>. O contraste é o que dá peso: se tudo for cinematográfico, nada é especial.</p>
+
+      <h3 class="sub">Interface: consoles, com a sala em 3D nos momentos-chave</h3>
+      <p>No dia a dia, a interface é 2D e desenhada por cima da imagem, no estilo do <strong>software de uma sala de controle</strong>: telas densas, tipografia técnica, verde, âmbar e vermelho para go, atenção e falha. É legível, mostra muita informação de uma vez e serve igual para lançamento, base, economia e editor.</p>
+      <p>Nos momentos que importam, a câmera corta para a <strong>sala de controle em 3D</strong>, com a equipe nas mesas:</p>
+      <ul class="plain">
+        <li>a votação de go/no-go antes da ignição, cada posto respondendo;</li>
+        <li>o silêncio da sala quando uma leitura fica estranha;</li>
+        <li>o aborto;</li>
+        <li>a comemoração de um marco conquistado.</li>
+      </ul>
+      <p>A escolha tem uma vantagem de produção: <strong>ela começa como consoles puros</strong>. O M2 sai só com os consoles, e a sala 3D entra quando houver arte para ela &mdash; personagens, animações e as vozes das chamadas.</p>
+
+      <h3 class="sub">Origem dos assets</h3>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Fonte</th><th>Usada para</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Bibliotecas prontas</strong></td><td>Terreno, vegetação e estruturas genéricas nos sítios de lançamento (Quixel Megascans, Fab).</td></tr>
+            <tr><td><strong>Dados reais públicos</strong></td><td>Relevo e imagens de satélite da Terra, Lua e Marte (NASA, USGS) &mdash; o planeta visto da órbita é o planeta de verdade.</td></tr>
+            <tr><td><strong>Geração procedural</strong></td><td>Detalhe de superfície nas escalas em que o dado real não chega, principalmente perto do solo.</td></tr>
+            <tr><td><strong>Produção própria</strong></td><td>Peças de foguete, prédios da base e personagens &mdash; o que define a identidade do jogo.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>A combinação que importa é a do meio: <strong>dado real de longe, procedural de perto</strong>. É ela que resolve o risco de renderizar um planeta inteiro em escala 1:1.</p>
+
+      <h3 class="sub">Áudio: vozes da sala e som real</h3>
+      <ul class="plain">
+        <li><strong>Chamadas da equipe</strong> &mdash; &ldquo;max-Q&rdquo;, &ldquo;corte do motor principal&rdquo;, &ldquo;separação confirmada&rdquo;. São a trilha sonora de verdade de um lançamento, e também informação: o jogador ouve a anomalia antes de procurá-la na tela.</li>
+        <li><strong>Som com física</strong> &mdash; o rugido chega com atraso à câmera distante, e some no vácuo.</li>
+        <li><strong>Trilha discreta</strong>, reservada aos momentos que pedem, em sintonia com a câmera cinematográfica dos marcos.</li>
+      </ul>
+      <blockquote><p>Um silêncio na sala de controle depois de uma leitura estranha diz mais do que qualquer música.</p></blockquote>
+
+      <div class="open-block">
+        <h3>Em aberto</h3>
+        <ul>
+          <li class="q"><input type="checkbox" id="q-idioma-vozes"><label for="q-idioma-vozes">Idioma das chamadas da equipe: inglês técnico, como na realidade, ou localizado?</label></li>
+          <li class="q"><input type="checkbox" id="q-momentos-cinema"><label for="q-momentos-cinema">Quais momentos exatamente disparam a câmera cinematográfica.</label></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="lancamento">
+      <div class="sec-head"><span class="n">09</span><h2>Lançamento e controle de missão</h2></div>
+      <p class="lead">O jogador não pilota. A câmera dele é a da sala de controle: ele acompanha cada etapa, monitora a telemetria e vigia o processo.</p>
+
+      <h3 class="sub">Guiagem: automática, com ajustes</h3>
+      <p>O foguete sobe sozinho, executando o programa embarcado. O jogo calcula um perfil de subida competente por conta própria; antes do voo, o jogador ajusta poucos parâmetros:</p>
+      <ul class="plain">
+        <li><strong>órbita alvo</strong> &mdash; altitudes de perigeu e apogeu, inclinação;</li>
+        <li><strong>início do giro</strong> &mdash; a altitude em que o foguete começa a inclinar;</li>
+        <li><strong>agressividade</strong> &mdash; subir mais reto gasta combustível contra a gravidade; inclinar cedo demais castiga a estrutura no ar denso.</li>
+      </ul>
+      <p>O painel mostra o Δv estimado e a margem sobre o que o veículo tem. Dá para otimizar sem pilotar &mdash; e um perfil mal ajustado desperdiça combustível ou não fecha a órbita.</p>
+
+      <h3 class="sub">Time warp livre</h3>
+      <p>O jogador acelera o tempo quando quiser, inclusive durante a subida. A tensão do lançamento fica por conta dele: quem quer viver cada segundo assiste em tempo real; quem já viu cem lançamentos do mesmo foguete pula para a injeção em órbita.</p>
+      <p>Por baixo, a física não muda com a aceleração: a simulação avança em passos fixos e só executa mais passos por quadro. O resultado de um voo acelerado é o mesmo de um voo assistido em tempo real.</p>
+
+      <h3 class="sub">As decisões do jogador</h3>
+      <ul class="plain">
+        <li><strong>Hold na contagem</strong> &mdash; adiar ou cancelar por clima, leitura ruim ou go/no-go negativo da equipe.</li>
+        <li><strong>Aborto</strong> &mdash; acionar a torre de escape da tripulação ou a segurança de voo.</li>
+        <li><strong>Contorno em voo</strong> &mdash; desligar um motor com problema e deixar os outros queimarem mais tempo, ou aceitar uma órbita pior em vez de perder tudo.</li>
+      </ul>
+      <blockquote><p>A tensão vem de informação e decisão, não de reflexo. Uma anomalia de motor aparece primeiro como um número estranho na telemetria, muito antes de virar uma falha.</p></blockquote>
+      <p>Isso exige guiagem em <strong>malha fechada</strong> no simulador de veículo: um perfil fixo, calculado antes e apenas executado, não sabe o que fazer quando perde um motor.</p>
+
+      <div class="open-block">
+        <h3>Em aberto</h3>
+        <ul>
+          <li class="q"><input type="checkbox" id="q-warp-anomalia"><label for="q-warp-anomalia">A aceleração do tempo volta sozinha ao normal quando surge uma anomalia ou uma decisão pendente?</label></li>
+          <li class="q"><input type="checkbox" id="q-consoles"><label for="q-consoles">Quantos postos tem a sala de controle, e se a equipe afeta leituras e tempo de reação.</label></li>
+          <li class="q"><input type="checkbox" id="q-perfis-salvos"><label for="q-perfis-salvos">O jogador pode salvar perfis de subida por modelo de foguete?</label></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="confiabilidade">
+      <div class="sec-head"><span class="n">10</span><h2>Confiabilidade, testes e falhas</h2></div>
+      <p>É o sistema que transforma orçamento e tecnologia em qualidade de foguete.</p>
+      <blockquote><p>Economizar não deixa o foguete pior. Deixa você sem saber o que tem nas mãos.</p></blockquote>
+      <p>O jogador nunca vê a confiabilidade real. Ele vê uma <strong>estimativa com incerteza</strong>, que só estreita com testes e voos. Lançar com pouca informação é uma aposta consciente &mdash; às vezes a aposta certa, quando o contrato paga bem e o prazo aperta.</p>
+
+      <h3 class="sub">As quatro camadas de risco</h3>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Camada</th><th>O que é</th><th>O jogador controla com</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Peça</strong></td><td>Risco próprio de cada motor, tanque ou separador, ligado à maturidade da tecnologia e ao histórico de voos.</td><td>P&amp;D; preferir peças maduras a novas.</td></tr>
+            <tr><td><strong>Projeto</strong></td><td>Risco de integração: combinações inéditas, muitos estágios, peça usada fora do envelope para o qual foi feita.</td><td>Projetar com margem; reaproveitar arquiteturas conhecidas.</td></tr>
+            <tr><td><strong>Unidade</strong></td><td>Este exemplar específico saiu com defeito.</td><td>Controle de qualidade; não apressar a linha.</td></tr>
+            <tr><td><strong>Operação</strong></td><td>Clima, erro da equipe, pressa para cumprir a janela.</td><td>Equipe, treinamento, aceitar adiar.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>As quatro se somam no risco do voo. Um foguete de projeto excelente ainda cai se a fábrica estiver correndo para entregar.</p>
+
+      <h3 class="sub">Como a estimativa funciona</h3>
+      <p>Cada peça tem uma probabilidade de falha real e <strong>oculta</strong>, definida quando é desenvolvida: nível de tecnologia, dinheiro investido, qualidade da equipe e margens do projeto. O jogador vê uma faixa de confiança que parte do que se sabe sobre tecnologias parecidas e se ajusta a cada evidência. Sem dados, a faixa é larga; com muitos dados, ela estreita em torno do valor real &mdash; seja ele bom ou ruim.</p>
+      <p>A consequência de design é o que importa: <strong>a faixa larga é o inimigo, não o número baixo</strong>. Descobrir cedo que uma peça é ruim é uma vitória, porque dá para consertar antes de perder uma carga.</p>
+      <p class="mono" style="font-size:0.86rem;color:var(--muted);max-width:var(--measure)">Implementação: distribuição Beta atualizada por sucessos e falhas, com o ponto de partida vindo do nível de tecnologia. A interface mostra o intervalo, nunca o valor real.</p>
+
+      <h3 class="sub">Testes: revelam e corrigem</h3>
+      <p>Um teste custa tempo e dinheiro, e faz duas coisas: <strong>mede</strong>, estreitando a faixa daquela peça para aquela fase de voo; e <strong>encontra defeitos</strong> &mdash; quando acusa uma anomalia, o problema fica visível e pode ser corrigido, custando mais tempo e dinheiro, e aí sim melhorando a confiabilidade real.</p>
+      <ul class="plain">
+        <li><strong>Teste estático de motor</strong> &mdash; ignição e queima com o foguete preso ao solo.</li>
+        <li><strong>Teste estrutural e de vibração</strong> &mdash; aguenta o pico de pressão dinâmica e o esforço do lançamento.</li>
+        <li><strong>Teste de vácuo</strong> &mdash; reignição do estágio superior.</li>
+        <li><strong>Ensaio geral da contagem</strong> &mdash; testa a equipe e os procedimentos, não o foguete.</li>
+        <li><strong>Voo de demonstração</strong> &mdash; o mais caro e o mais informativo.</li>
+      </ul>
+      <p>Voos bem-sucedidos também são evidência: a frota fica confiável com o uso, até um piso definido pela qualidade do projeto.</p>
+      <p>Peças compradas de fornecedores externos chegam com histórico conhecido, então a faixa já começa estreita &mdash; você paga para não precisar descobrir (ver <a href="#pd">P&amp;D</a>).</p>
+
+      <h3 class="sub">A escada de severidade</h3>
+      <p>Falha não é só explodir. É essa escada que dá sentido ao contorno em voo:</p>
+      <div class="ladder">
+        <div class="rung"><span class="lvl">1</span><div><span class="t">Leitura fora do nominal</span><br><span class="d">Um número estranho na telemetria, ainda sem consequência.</span></div></div>
+        <div class="rung"><span class="lvl">2</span><div><span class="t">Degradação</span><br><span class="d">Perda de empuxo, vazamento lento, pressão de câmara caindo.</span></div></div>
+        <div class="rung"><span class="lvl">3</span><div><span class="t">Desligamento</span><br><span class="d">Um motor sai de operação; os outros podem compensar queimando mais tempo.</span></div></div>
+        <div class="rung"><span class="lvl">4</span><div><span class="t">Perda do estágio</span><br><span class="d">A missão vira salvamento: órbita pior, contrato cumprido pela metade.</span></div></div>
+        <div class="rung"><span class="lvl">5</span><div><span class="t">Perda do veículo</span><br><span class="d">Carga perdida; com tripulação, a torre de escape decide o resto.</span></div></div>
+      </div>
+      <p>Cada camada de risco tende a produzir falhas em fases diferentes: peça nova falha na ignição e na queima; defeito de fabricação aparece no esforço do pico de pressão dinâmica; erro de operação aparece na contagem e na separação.</p>
+      <p>E o incentivo a testar não precisa de regra artificial: <strong>uma falha em teste quase não custa reputação; uma falha em voo custa contratos.</strong></p>
+
+      <div class="open-block">
+        <h3>Em aberto</h3>
+        <ul>
+          <li class="q"><input type="checkbox" id="q-ui-incerteza"><label for="q-ui-incerteza">Como a incerteza aparece na tela: número, barra ou texto? Define o quanto o jogador consegue raciocinar sobre risco.</label></li>
+          <li class="q"><input type="checkbox" id="q-redundancia"><label for="q-redundancia">Existe redundância projetável (motor a mais, sistema duplicado) e quanto custa em massa?</label></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="arquitetura">
+      <div class="sec-head"><span class="n">TD</span><h2>Arquitetura técnica</h2></div>
+      <ul class="plain">
+        <li><strong>A simulação orbital não usa a física do motor.</strong> O <code>OrbitalCore</code> é C++ puro em dupla precisão, sem dependência da Unreal, e compila fora dela para ser testado rápido.</li>
+        <li><strong>Espaço de simulação próprio</strong>, com o mundo reposicionado em torno da câmera na hora de desenhar &mdash; em escala 1:1 as distâncias interplanetárias passam do que o motor cobre sozinho.</li>
+        <li><strong>Propagação híbrida:</strong> trajetória analítica para veículos sem motor ligado, o que permite acelerar o tempo com muitos objetos; integração numérica no voo propulsado e na atmosfera.</li>
+        <li><strong>Relógio único</strong> de simulação, desacoplado da taxa de quadros.</li>
+        <li><strong>Estado separado da apresentação</strong> &mdash; facilita salvar, testar e, no futuro, multiplayer.</li>
+      </ul>
+
+      <h3 class="sub">Módulos</h3>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Módulo</th><th>Depende de</th><th>Responsabilidade</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">OrbitalCore</td><td class="mono">&mdash;</td><td>Elementos orbitais, propagação, integradores, gravidade e achatamento, esferas de influência, manobras, atmosfera.</td></tr>
+            <tr><td class="mono">CelestialBodies</td><td class="mono">OrbitalCore</td><td>Corpos celestes, efemérides, renderização de planetas.</td></tr>
+            <tr><td class="mono">VehicleSim</td><td class="mono">OrbitalCore</td><td>Estágios, propelente, empuxo e impulso específico, guiagem, falhas.</td></tr>
+            <tr><td class="mono">RocketDesign</td><td class="mono">VehicleSim</td><td>Editor de foguetes.</td></tr>
+            <tr><td class="mono">BaseBuilding</td><td class="mono">&mdash;</td><td>Construção da base.</td></tr>
+            <tr><td class="mono">Company</td><td class="mono">&mdash;</td><td>Finanças, contratos, P&amp;D, concorrentes IA.</td></tr>
+            <tr><td class="mono">Missions</td><td class="mono">OrbitalCore, Company</td><td>Objetivos verificáveis, campanha.</td></tr>
+            <tr><td class="mono">GameUI</td><td class="mono">UMG</td><td>Interface, telemetria, mapa orbital.</td></tr>
+            <tr><td class="mono">SaveSystem</td><td class="mono">&mdash;</td><td>Serialização do estado.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub">Convenções do núcleo</h3>
+      <ul class="plain">
+        <li>Unidades do SI em tudo: metros, segundos, quilogramas, radianos.</li>
+        <li>Nenhum cabeçalho da Unreal dentro do <code>OrbitalCore</code>. A ponte com o motor mora nos módulos que o consomem.</li>
+        <li>Nada de nomes genéricos em namespaces anônimos: a compilação junta vários arquivos num só e eles colidem.</li>
+        <li>Todo recurso novo do núcleo nasce com um teste contra um valor publicado.</li>
+      </ul>
+
+      <h3 class="sub">Números que o núcleo já reproduz</h3>
+      <div class="figures">
+        <div class="figure"><span class="v">42.164,17 km</span><span class="k">raio da órbita geoestacionária, a partir do dia sideral</span></div>
+        <div class="figure"><span class="v">98,19°</span><span class="k">inclinação heliossíncrona a 700 km</span></div>
+        <div class="figure"><span class="v">3,89 km/s</span><span class="k">Hohmann de órbita baixa a 300 km até a geoestacionária</span></div>
+        <div class="figure"><span class="v">0,9856°/dia</span><span class="k">precessão do nodo por achatamento da Terra, analítica e numérica</span></div>
+        <div class="figure"><span class="v">42 kPa &middot; T+61 s</span><span class="k">max-Q do lançador de referência, na faixa dos reais</span></div>
+        <div class="figure"><span class="v">~24 t</span><span class="k">capacidade para órbita de 200 km a partir do Cabo Canaveral</span></div>
+        <div class="figure"><span class="v">51,60°</span><span class="k">inclinação da ISS entregue, com a rotação da Terra descontada no rumo</span></div>
+      </div>
+      <p>São 35 testes automatizados. Os de mecânica orbital comparam com valores publicados, não com as próprias fórmulas do jogo; os de voo verificam o que o design exige &mdash; sobreviver à perda de um motor, quebrar ao inclinar cedo demais, dar o mesmo resultado com o tempo acelerado.</p>
+
+      <h3 class="sub">Riscos, em ordem de prioridade</h3>
+      <ol class="steps">
+        <li><div><span class="t">Precisão numérica em escala 1:1</span><br><span class="d">O reposicionamento do mundo em torno da câmera precisa ser provado antes de tudo &mdash; é o M2.</span></div></li>
+        <li><div><span class="t">Planeta inteiro fotorealista</span><br><span class="d">Do solo à órbita. Começa com a Terra em baixa resolução e uma área detalhada no sítio de lançamento.</span></div></li>
+        <li><div><span class="t">Complexidade para o jogador</span><br><span class="d">Resolvido pela guiagem automática e por níveis de assistência.</span></div></li>
+        <li><div><span class="t">Curva de aprendizado do motor</span><br><span class="d">Mitigada mantendo o núcleo em C++ puro, onde a experiência já rende.</span></div></li>
+      </ol>
+
+    </section>
+
+    <section id="roadmap">
+      <div class="sec-head"><span class="n">RM</span><h2>Roadmap</h2></div>
+      <div class="roadmap">
+        <div class="milestone done">
+          <div class="m-head"><span class="code">M0</span><span class="t">Estrutura do projeto</span><span class="chip done">concluído</span></div>
+          <p>Projeto UE5 com dez módulos C++, configuração, Git com LFS e o esqueleto da documentação.</p>
+        </div>
+        <div class="milestone done">
+          <div class="m-head"><span class="code">M1</span><span class="t">Núcleo orbital</span><span class="chip done">concluído</span></div>
+          <p>Elementos orbitais, propagação analítica, integradores, achatamento da Terra, manobras e atmosfera padrão &mdash; com 20 testes passando em gcc e clang.</p>
+        </div>
+        <div class="milestone now">
+          <div class="m-head"><span class="code">M2</span><span class="t">Primeiro satélite em órbita baixa</span><span class="chip next">em andamento</span></div>
+          <p><strong>Pronto:</strong> o simulador de voo, testado fora do motor &mdash; empuxo que varia com a pressão, estágios, arrasto, giro gravitacional com o rumo corrigido pela rotação da Terra e um corredor de subida, guiagem em malha fechada, perda de motor, limite estrutural e aceleração de tempo sem alterar o resultado.</p>
+          <p><strong>Pronto também:</strong> Unreal Engine 5.8.2 instalada; os dez módulos compilam em pouco mais de um minuto e carregam no editor.</p>
+          <p><strong>Falta:</strong> a parte visual na Unreal &mdash; Terra 1:1, sítio de lançamento, consoles de telemetria e mapa orbital. É aqui que a escala 1:1 é provada na prática.</p>
+        </div>
+        <div class="milestone">
+          <div class="m-head"><span class="code">M3</span><span class="t">Editor de foguetes</span></div>
+          <p>Peças livres, números ao vivo, lançar o próprio projeto.</p>
+        </div>
+        <div class="milestone">
+          <div class="m-head"><span class="code">M4</span><span class="t">Base RTS e economia</span></div>
+          <p>Plataforma, fábrica, bancada de teste, dinheiro e os primeiros contratos.</p>
+        </div>
+        <div class="milestone">
+          <div class="m-head"><span class="code">M5</span><span class="t">P&amp;D e campanha inicial</span></div>
+          <p>Árvore tecnológica, reputação, falhas e seguros.</p>
+        </div>
+        <div class="milestone">
+          <div class="m-head"><span class="code">M6+</span><span class="t">Lua, Marte e concorrência</span></div>
+          <p>Esferas de influência e pouso, concorrentes IA, estações, missões tripuladas. Multiplayer por último.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="end">
+  Orbital Ventures &mdash; documento vivo. As marcações das perguntas em aberto ficam salvas neste navegador.
+</footer>
+
+<script>
+  (function () {
+    var KEY = "orbital-ventures-gdd-perguntas";
+    var boxes = Array.prototype.slice.call(document.querySelectorAll(".q input"));
+    var countEl = document.getElementById("open-count");
+    var meterEl = document.getElementById("open-meter");
+    var filterEl = document.getElementById("only-open");
+
+    function paint(box) {
+      var row = box.closest(".q");
+      if (row) { row.classList.toggle("resolved", box.checked); }
+    }
+
+    function refreshTally() {
+      var resolved = boxes.filter(function (b) { return b.checked; }).length;
+      var open = boxes.length - resolved;
+      countEl.textContent = open;
+      meterEl.style.width = (boxes.length ? (resolved / boxes.length) * 100 : 0) + "%";
+    }
+
+    function save() {
+      var state = {};
+      boxes.forEach(function (b) { if (b.checked) { state[b.id] = true; } });
+      try {
+        localStorage.setItem(KEY, JSON.stringify(state));
+      } catch (e) {
+        /* Navegador sem armazenamento: as marcações valem só nesta sessão. */
+      }
+    }
+
+    function load() {
+      var saved = {};
+      try {
+        saved = JSON.parse(localStorage.getItem(KEY) || "{}") || {};
+      } catch (e) {
+        saved = {};
+      }
+      boxes.forEach(function (b) { b.checked = saved[b.id] === true; paint(b); });
+      refreshTally();
+    }
+
+    boxes.forEach(function (b) {
+      b.addEventListener("change", function () { paint(b); refreshTally(); save(); });
+    });
+
+    filterEl.addEventListener("change", function () {
+      document.body.classList.toggle("only-open", filterEl.checked);
+    });
+
+    // Navegação: destaca a seção visível.
+    var links = Array.prototype.slice.call(document.querySelectorAll(".rail nav a"));
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
+
+    if ("IntersectionObserver" in window) {
+      var visible = {};
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) { visible[entry.target.id] = entry.isIntersecting; });
+        var current = null;
+        Object.keys(byId).forEach(function (id) { if (!current && visible[id]) { current = id; } });
+        links.forEach(function (a) { a.classList.toggle("current", a === byId[current]); });
+      }, { rootMargin: "-10% 0px -70% 0px" });
+      Array.prototype.slice.call(document.querySelectorAll("main section")).forEach(function (s) { observer.observe(s); });
+    }
+
+    load();
+  })();
+</script>
