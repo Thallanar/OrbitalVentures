@@ -1,0 +1,21 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "5.8",
+	"Category": "",
+	"Description": "Orbital Ventures - simulador de empresa espacial",
+	"Modules": [
+		{ "Name": "OrbitalVentures", "Type": "Runtime", "LoadingPhase": "Default" },
+		{ "Name": "OrbitalCore", "Type": "Runtime", "LoadingPhase": "Default" },
+		{ "Name": "CelestialBodies", "Type": "Runtime", "LoadingPhase": "Default" },
+		{ "Name": "VehicleSim", "Type": "Runtime", "LoadingPhase": "Default" },
+		{ "Name": "RocketDesign", "Type": "Runtime", "LoadingPhase": "Default" },
+		{ "Name": "BaseBuilding", "Type": "Runtime", "LoadingPhase": "Default" },
+		{ "Name": "Company", "Type": "Runtime", "LoadingPhase": "Default" },
+		{ "Name": "Missions", "Type": "Runtime", "LoadingPhase": "Default" },
+		{ "Name": "GameUI", "Type": "Runtime", "LoadingPhase": "Default" },
+		{ "Name": "SaveSystem", "Type": "Runtime", "LoadingPhase": "Default" }
+	],
+	"Plugins": [
+		{ "Name": "AndroidFileServer", "Enabled": false }
+	]
+}

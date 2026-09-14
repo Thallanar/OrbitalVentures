@@ -1,0 +1,26 @@
+# Unreal Engine — gerados
+Binaries/
+Intermediate/
+Saved/
+DerivedDataCache/
+Plugins/*/Binaries/
+Plugins/*/Intermediate/
+
+# Arquivos de projeto de IDE gerados pelo UE
+*.sln
+*.code-workspace
+.vs/
+.vscode/
+.idea/
+*.xcworkspace
+Makefile
+CMakeLists.txt
+!Tools/**/CMakeLists.txt
+compile_commands.json
+
+# Build standalone dos testes (e diretórios de build criados por IDEs)
+Tools/**/build*/
+/build/
+
+# Caminhos locais da Unreal (um por máquina)
+Tools/local.env
